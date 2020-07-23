@@ -10,8 +10,8 @@ using Roksh.Interview.Repositories;
 namespace Roksh.Interview.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200723101349_InitializeMigration")]
-    partial class InitializeMigration
+    [Migration("20200723122636_UserLoggedInStatusAdded")]
+    partial class UserLoggedInStatusAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,6 +46,21 @@ namespace Roksh.Interview.Migrations
                     b.ToTable("Packs");
                 });
 
+            modelBuilder.Entity("Roksh.Interview.Models.PackProduct", b =>
+                {
+                    b.Property<int>("PackId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PackId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("PackProducts");
+                });
+
             modelBuilder.Entity("Roksh.Interview.Models.PackState", b =>
                 {
                     b.Property<int>("Id")
@@ -77,12 +92,7 @@ namespace Roksh.Interview.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PackId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("PackId");
 
                     b.ToTable("Products");
                 });
@@ -93,6 +103,9 @@ namespace Roksh.Interview.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsLoggedIn")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -116,11 +129,19 @@ namespace Roksh.Interview.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("Roksh.Interview.Models.Product", b =>
+            modelBuilder.Entity("Roksh.Interview.Models.PackProduct", b =>
                 {
-                    b.HasOne("Roksh.Interview.Models.Pack", null)
-                        .WithMany("Products")
-                        .HasForeignKey("PackId");
+                    b.HasOne("Roksh.Interview.Models.Pack", "Pack")
+                        .WithMany("PackProducts")
+                        .HasForeignKey("PackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Roksh.Interview.Models.Product", "Product")
+                        .WithMany("PackProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

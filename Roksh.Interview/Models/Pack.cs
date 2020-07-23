@@ -12,6 +12,6 @@ namespace Roksh.Interview.Models
         public int Id { get; set; }
         public string PackId { get; set; }
         public PackState PackState { get; set; }
-        public List<Product> Products { get; set; }
+        public List<PackProduct> PackProducts { get; set; }
     }
 }

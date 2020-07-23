@@ -9,6 +9,8 @@ namespace Roksh.Interview.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public List<PackProduct> PackProducts { get; set; }
+
 
     }
 }

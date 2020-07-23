@@ -15,9 +15,12 @@ namespace Roksh.Interview.Repositories
         public DbSet<Pack> Packs { get; set; }
         public DbSet<PackState> PackStates { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<PackProduct> PackProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PackProduct>()
+                .HasKey(pp => new { pp.PackId, pp.ProductId });
         }
 
     }
