@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Roksh.Interview.Models
 {
-    public class Productcs
+    public class Product
     {
         public int Id { get; set; }
         public string Name { get; set; }
